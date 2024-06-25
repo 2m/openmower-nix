@@ -18,3 +18,11 @@ github:matthewcroughan/raspberrypi-nixos-example`
 
 Simply fork this repo and begin adding code to `./configuration.nix` and allow
 this basic configuration to become your own.
+
+```
+sudo nixos-rebuild switch --flake .
+nix-shell -p raspberrypi-eeprom
+sudo mkdir /mnt
+sudo mount /dev/disk/by-label/FIRMWARE /mnt
+BOOTFS=/mnt FIRMWARE_RELEASE_STATUS=stable rpi-eeprom-update -d -a
+```

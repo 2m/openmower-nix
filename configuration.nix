@@ -1,23 +1,14 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, ... }:
 {
+  imports = [ ./settings.nix ];
+
+  system.stateVersion = "24.05";
+
+  # needed for deploy-rs
+  # https://artemis.sh/2023/06/06/cross-compile-nixos-for-great-good.html
+  boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
+
   environment.systemPackages = with pkgs; [ vim git ];
+
   services.openssh.enable = true;
-  networking.hostName = "pi";
-  users = {
-    users.myUsername = {
-      password = "myPassword";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-    };
-  };
-  networking = {
-    interfaces."wlan0".useDHCP = true;
-    wireless = {
-      interfaces = [ "wlan0" ];
-      enable = true;
-      networks = {
-        networkSSID.psk = "password";
-      };
-    };
-  };
 }

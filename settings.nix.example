@@ -1,0 +1,9 @@
+{
+  imports = [ ./users.nix ./network.nix ];
+
+  settings = {
+    authorizedKey = "...";
+    wifiSsid = "...";
+    wifiPsk = "...";
+  };
+}

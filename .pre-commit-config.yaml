@@ -1,0 +1,8 @@
+repos:
+- repo: local
+  hooks:
+  - id: check-settings-nix
+    name: Check for settings.nix
+    language: fail
+    entry: Please remove settings.nix from git staging with 'git reset HEAD -- settings.nix'
+    files: 'settings.nix$'
