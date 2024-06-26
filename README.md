@@ -1,23 +1,20 @@
-### On NixOS
-If you're running NixOS and want to use this template to build the Raspberry Pi
-4 Image, you'll need to emulate an arm64 machine by adding the following to your
-NixOS configuration.
+### Using
 
-```
-{
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-}
-```
+After installing Nix from [nix-installer], run `just prepare` to install nix LSP for editor support and nix formmater.
 
-Then you will be able to run `nix build .#images.pi` and get a result you can
-flash to an SD Card and boot.
+Then run `just build-image` to build RPi SD card image that contains OpenMower setup.
 
-After you've booted, you will be able to rebuild the nixosConfiguration on the
-Pi. For example, by running `nixos-rebuild --flake
-github:matthewcroughan/raspberrypi-nixos-example`
+For MacOS users, prepend `just` command with `./inside-docker.sh`, like `./inside-docker.sh just build-image`.
 
-Simply fork this repo and begin adding code to `./configuration.nix` and allow
-this basic configuration to become your own.
+Install `jnoortheen.nix-ide` VSCode extension for Nix language support.
+
+[nix-installer]: https://github.com/DeterminateSystems/nix-installer
+
+### Update RPi EEPROM
+
+If the built image does not boot with error before Linux kernel startup, you might need to update the RPi EEPROM.
+
+First build SD card image with older kernel by changing kernel defition in [base.nix] to `linuxPackages_6_0`. After flashing the image run the following commands on the RPi:
 
 ```
 sudo nixos-rebuild switch --flake .
@@ -26,3 +23,5 @@ sudo mkdir /mnt
 sudo mount /dev/disk/by-label/FIRMWARE /mnt
 BOOTFS=/mnt FIRMWARE_RELEASE_STATUS=stable rpi-eeprom-update -d -a
 ```
+
+[base.nix]: ./base.nix
